@@ -2,13 +2,33 @@ version: '2'
 
 
 services:
-    web:
+    logservice1:
+        environment:
+            - PORT=35001
         build:
-            context: .
+            context: ./logservice
             dockerfile: Dockerfile
-        container_name: web
-        ports:
-            - "8087:6000"
+        container_name: logservice1
+        links:
+        - db
+    logservice2:
+        environment:
+            - PORT=35002
+        build:
+            context: ./logservice
+            dockerfile: Dockerfile
+        container_name: logservice2
+        links:
+        - db
+    logservice3:
+        environment:
+            - PORT=35003
+        build:
+            context: ./logservice
+            dockerfile: Dockerfile
+        container_name: logservice3
+        links:
+        - db
     db:
         image: mongo:3.6.1
         container_name: db
@@ -18,7 +38,6 @@ services:
         ports:
             - 27017:27017
         command: mongod
-        
 volumes:
     mongodb:
     mongodb_config:
